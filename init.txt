@@ -1,5 +1,10 @@
-#Para iniciar o backend:
-cd smart-home-backend/ && npm start
+# Após clonar o projeto, antes de inicar a primeira vez o backend e frontend 
+# É necessario instalar as dependencias do projeto
+npm install
 
-#Para iniciar o frontend:
-cd smart-home-frontend && npm start
+# Após isso é necessario iniciar ele:
+    #Para iniciar o backend:
+    cd smart-home-backend/ && npm start
+
+    #Para iniciar o frontend:
+    cd smart-home-frontend && npm start

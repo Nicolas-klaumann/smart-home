@@ -14,7 +14,31 @@ const io = new Server(httpServer, {
   },
 });
 
-// Tipos para os cômodos
+interface DeviceState {
+  lights: boolean;
+  tv?: {
+    on: boolean;
+    channel: number;
+  };
+  airConditioner?: {
+    on: boolean;
+    temperature: number;
+  };
+  fridge?: {
+    temperature: number;
+    alert: boolean;
+  };
+  stove?: {
+    on: boolean;
+    power: number;
+  };
+  fan?: {
+    on: boolean;
+    speed: number;
+  };
+  curtains?: 'open' | 'closed';
+}
+
 interface RoomState {
   livingRoom: {
     lights: boolean;
@@ -48,7 +72,6 @@ interface RoomState {
   };
 }
 
-// Estado inicial dos dispositivos
 let devicesState: RoomState = {
   livingRoom: {
     lights: false,
@@ -58,7 +81,7 @@ let devicesState: RoomState = {
   kitchen: {
     lights: false,
     fridge: { temperature: 4, alert: false },
-    stove: { on: false, power: 0 },
+    stove: { on: false, power: 1 },
   },
   bedroom: {
     lights: false,
@@ -70,17 +93,18 @@ let devicesState: RoomState = {
 io.on('connection', (socket) => {
   console.log('New client connected');
 
-  // Enviar o estado inicial para o novo cliente
   socket.emit('initialState', devicesState);
 
-  // Lidar com as alterações de estado enviadas pelo cliente
   socket.on(
     'updateDevice',
     (data: { room: keyof RoomState; device: string; state: any }) => {
       const { room, device, state } = data;
+      console.log(
+        `Update device request: Room - ${room}, Device - ${device}, State - ${state}`
+      );
       if (devicesState[room] && device in devicesState[room]) {
         (devicesState[room] as any)[device] = state;
-        io.emit('deviceStateChanged', data); // Broadcast para todos os clientes
+        io.emit('deviceStateChanged', data);
       }
     }
   );
