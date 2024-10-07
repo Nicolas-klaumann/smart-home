@@ -1,68 +1,95 @@
 import express from 'express';
-import http from 'http';
+import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 
 const app = express();
 app.use(cors());
 
-const server = http.createServer(app);
-const io = new Server(server, {
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
 
-interface DeviceState {
-  lights: boolean;
-  tv: { status: boolean; channel: number };
-  airConditioner: { status: boolean; temperature: number };
+// Tipos para os cômodos
+interface RoomState {
+  livingRoom: {
+    lights: boolean;
+    tv: {
+      on: boolean;
+      channel: number;
+    };
+    airConditioner: {
+      on: boolean;
+      temperature: number;
+    };
+  };
+  kitchen: {
+    lights: boolean;
+    fridge: {
+      temperature: number;
+      alert: boolean;
+    };
+    stove: {
+      on: boolean;
+      power: number;
+    };
+  };
+  bedroom: {
+    lights: boolean;
+    fan: {
+      on: boolean;
+      speed: number;
+    };
+    curtains: 'open' | 'closed';
+  };
 }
 
-let deviceState: DeviceState = {
-  lights: false,
-  tv: { status: false, channel: 1 },
-  airConditioner: { status: false, temperature: 24 },
+// Estado inicial dos dispositivos
+let devicesState: RoomState = {
+  livingRoom: {
+    lights: false,
+    tv: { on: false, channel: 1 },
+    airConditioner: { on: false, temperature: 24 },
+  },
+  kitchen: {
+    lights: false,
+    fridge: { temperature: 4, alert: false },
+    stove: { on: false, power: 0 },
+  },
+  bedroom: {
+    lights: false,
+    fan: { on: false, speed: 1 },
+    curtains: 'closed',
+  },
 };
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('New client connected');
 
-  // Enviar estado inicial dos dispositivos para o cliente
-  socket.emit('initialState', deviceState);
+  // Enviar o estado inicial para o novo cliente
+  socket.emit('initialState', devicesState);
 
-  // Lidar com eventos de mudança de estado
-  socket.on('toggleLights', (status: boolean) => {
-    deviceState.lights = status;
-    io.emit('lightStatus', status); // Enviar atualização para todos os clientes
-  });
-
-  socket.on('toggleTV', (status: boolean) => {
-    deviceState.tv.status = status;
-    io.emit('tvStatus', deviceState.tv);
-  });
-
-  socket.on('changeChannel', (channel: number) => {
-    deviceState.tv.channel = channel;
-    io.emit('tvStatus', deviceState.tv);
-  });
-
-  socket.on('toggleAirConditioner', (status: boolean) => {
-    deviceState.airConditioner.status = status;
-    io.emit('airConditionerStatus', deviceState.airConditioner);
-  });
-
-  socket.on('setTemperature', (temperature: number) => {
-    deviceState.airConditioner.temperature = temperature;
-    io.emit('airConditionerStatus', deviceState.airConditioner);
-  });
+  // Lidar com as alterações de estado enviadas pelo cliente
+  socket.on(
+    'updateDevice',
+    (data: { room: keyof RoomState; device: string; state: any }) => {
+      const { room, device, state } = data;
+      if (devicesState[room] && device in devicesState[room]) {
+        (devicesState[room] as any)[device] = state;
+        io.emit('deviceStateChanged', data); // Broadcast para todos os clientes
+      }
+    }
+  );
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log('Client disconnected');
   });
 });
 
-server.listen(4000, () => {
-  console.log('listening on *:3000');
+httpServer.listen(4000, () => {
+  console.log('Server is listening on port 4000');
 });
