@@ -1,0 +1,5 @@
+#Para iniciar o backend:
+cd smart-home-backend/ && npm start
+
+#Para iniciar o frontend:
+cd smart-home-frontend && npm start
