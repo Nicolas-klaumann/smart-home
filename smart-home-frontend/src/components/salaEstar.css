@@ -1,0 +1,70 @@
+.section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.tv {
+    width: 250px;
+    height: 150px;
+    border: 10px solid #333;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    margin: 20px auto;
+}
+
+.tv-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tv-screen img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.tv-off {
+    color: #fff;
+    font-size: 18px;
+}
+
+.imgArCondicionado {
+    width: 200px;
+    height: 100px;
+}
+
+.arCondicionado {
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+}
+
+.imgArCondicionado {
+    width: 150px;
+    height: auto;
+}
+
+.temperatura {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
