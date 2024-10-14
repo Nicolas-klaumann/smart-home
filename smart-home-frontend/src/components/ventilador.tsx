@@ -1,5 +1,5 @@
 import React from 'react';
-import './quarto'; // Certifique-se de importar o CSS
+import './quarto';
 
 interface FanControlProps {
   on: boolean;

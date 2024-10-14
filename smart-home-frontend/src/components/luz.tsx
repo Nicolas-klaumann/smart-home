@@ -1,4 +1,3 @@
-// LightControl.tsx
 import React from 'react';
 
 interface LightControlProps {

@@ -1,4 +1,3 @@
-// TV.tsx
 import React from 'react';
 
 interface TVProps {

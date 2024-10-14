@@ -1,5 +1,5 @@
 import React from 'react';
-import './quarto'; // Certifique-se de criar e importar o CSS
+import './quarto';
 
 interface CurtainControlProps {
   open: boolean;

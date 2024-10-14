@@ -1,12 +1,11 @@
-// src/App.tsx
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import LivingRoom from './components/salaEstar';
 import Kitchen from './components/cozinha';
 import Bedroom from './components/quarto';
+import Header from './components/header';
+import Footer from './components/footer';
 import './App.css';
-
-
 
 const socket = io('http://localhost:4000');
 
@@ -41,10 +40,13 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Smart Home Control</h1>
-      <LivingRoom devices={devices} handleDeviceChange={handleDeviceChange} />
-      <Kitchen devices={devices} handleDeviceChange={handleDeviceChange} />
-      <Bedroom devices={devices} handleDeviceChange={handleDeviceChange} />
+      <Header />
+      <main>
+        <LivingRoom devices={devices} handleDeviceChange={handleDeviceChange} />
+        <Kitchen devices={devices} handleDeviceChange={handleDeviceChange} />
+        <Bedroom devices={devices} handleDeviceChange={handleDeviceChange} />
+      </main>
+      <Footer />
     </div>
   );
 };
