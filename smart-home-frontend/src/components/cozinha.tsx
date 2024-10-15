@@ -1,39 +1,41 @@
 import React from 'react';
-import LightControl from './luz';
-import StoveControl from './fogao';
+import LuzControl from './luz';
+import FogaoControl from './fogao';
 import './cozinha.css';
 
-interface KitchenProps {
+// Definição das propriedades (props) que o componente Cozinha espera receber
+interface CozinhaProps {
   devices: any;
   handleDeviceChange: (room: string, device: string, state: any) => void;
 }
 
-const Kitchen: React.FC<KitchenProps> = ({ devices, handleDeviceChange }) => {
+// Componente funcional que representa a cozinha
+const Cozinha: React.FC<CozinhaProps> = ({ devices, handleDeviceChange }) => {
   return (
     <div className="section">
       <h2>Cozinha</h2>
       
-      {/* Componente LightControl para gerenciar a luz */}
-      <LightControl
-        room="kitchen"
-        lights={devices.kitchen?.lights}
-        onToggle={() => handleDeviceChange('kitchen', 'lights', !devices.kitchen?.lights)}
+      {/* Componente LuzControl para gerenciar a luz */}
+      <LuzControl
+        room="Cozinha"
+        Luz={devices.Cozinha?.Luz}
+        onToggle={() => handleDeviceChange('Cozinha', 'Luz', !devices.Cozinha?.Luz)}
       />
 
       <div>
-        <label>Temperatura da Geladeira: {devices.kitchen?.fridge?.temperature}°C</label>
-        {devices.kitchen?.fridge?.alert && <p style={{ color: 'red' }}>Alerta: A temperatura está acima de 5°C!</p>}
+        <label>Temperatura da Geladeira: {devices.Cozinha?.Geladeira?.temperatura}°C</label>
+        {devices.Cozinha?.Geladeira?.alert && <p style={{ color: 'red' }}>Alerta: A temperatura está acima de 5°C!</p>}
       </div>
 
-      {/* Componente StoveControl para gerenciar o fogão */}
-      <StoveControl
-        on={devices.kitchen?.stove?.on}
-        power={devices.kitchen?.stove?.power}
-        onToggle={() => handleDeviceChange('kitchen', 'stove', { ...devices.kitchen?.stove, on: !devices.kitchen?.stove.on })}
-        onChangePower={(power) => handleDeviceChange('kitchen', 'stove', { ...devices.kitchen?.stove, power })}
+      {/* Componente FogaoControl para gerenciar o fogão */}
+      <FogaoControl
+        on={devices.Cozinha?.Fogao?.on}
+        power={devices.Cozinha?.Fogao?.power}
+        onToggle={() => handleDeviceChange('Cozinha', 'Fogao', { ...devices.Cozinha?.Fogao, on: !devices.Cozinha?.Fogao.on })}
+        onChangePower={(power) => handleDeviceChange('Cozinha', 'Fogao', { ...devices.Cozinha?.Fogao, power })}
       />
     </div>
   );
 };
 
-export default Kitchen;
+export default Cozinha;

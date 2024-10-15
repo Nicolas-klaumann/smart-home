@@ -1,39 +1,43 @@
 import React from 'react';
-import LightControl from './luz';
-import FanControl from './ventilador';
-import CurtainControl from './cortina';
+import LuzControl from './luz';
+import VentiladorControl from './ventilador';
+import CortinaControl from './cortina';
 import './quarto.css';
 
-interface BedroomProps {
+// Definição das propriedades (props) que o componente QuartoProps espera receber
+interface QuartoProps {
   devices: any;
   handleDeviceChange: (room: string, device: string, state: any) => void;
 }
 
-const Bedroom: React.FC<BedroomProps> = ({ devices, handleDeviceChange }) => {
+// Componente funcional que representa o Quarto
+const Quarto: React.FC<QuartoProps> = ({ devices, handleDeviceChange }) => {
   return (
     <div className="section">
       <h2>Quarto</h2>
 
-      <LightControl
-        room="bedroom"
-        lights={devices.bedroom?.lights}
-        onToggle={() => handleDeviceChange('bedroom', 'lights', !devices.bedroom?.lights)}
+      {/* Componente LuzControl para gerenciar a Luz */}
+      <LuzControl
+        room="Quarto"
+        Luz={devices.Quarto?.Luz}
+        onToggle={() => handleDeviceChange('Quarto', 'Luz', !devices.Quarto?.Luz)}
       />
 
-      <FanControl
-        on={devices.bedroom?.fan?.on}
-        speed={devices.bedroom?.fan?.speed}
-        onToggle={() => handleDeviceChange('bedroom', 'fan', { ...devices.bedroom?.fan, on: !devices.bedroom?.fan.on })}
-        onChangeSpeed={(speed) => handleDeviceChange('bedroom', 'fan', { ...devices.bedroom?.fan, speed })}
+      {/* Componente VentiladorControl para gerenciar o Ventilador */}
+      <VentiladorControl
+        on={devices.Quarto?.Ventilador?.on}
+        velocidade={devices.Quarto?.Ventilador?.velocidade}
+        onToggle={() => handleDeviceChange('Quarto', 'Ventilador', { ...devices.Quarto?.Ventilador, on: !devices.Quarto?.Ventilador.on })}
+        onChangeVelocidade={(velocidade) => handleDeviceChange('Quarto', 'Ventilador', { ...devices.Quarto?.Ventilador, velocidade })}
       />
 
-      {/* Componente CurtainControl para gerenciar as cortinas */}
-      <CurtainControl
-        open={devices.bedroom?.curtains === 'open'}
-        onToggle={() => handleDeviceChange('bedroom', 'curtains', devices.bedroom?.curtains === 'open' ? 'closed' : 'open')}
+      {/* Componente CortinaControl para gerenciar as cortinas */}
+      <CortinaControl
+        open={devices.Quarto?.Cortinas === 'aberto'}
+        onToggle={() => handleDeviceChange('Quarto', 'Cortinas', devices.Quarto?.Cortinas === 'aberto' ? 'fechado' : 'aberto')}
       />
     </div>
   );
 };
 
-export default Bedroom;
+export default Quarto;

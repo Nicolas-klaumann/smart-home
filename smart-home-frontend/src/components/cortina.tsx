@@ -1,14 +1,16 @@
 import React from 'react';
 import './quarto';
 
-interface CurtainControlProps {
+// Definição das propriedades (props) que o componente CortinaControl espera receber
+interface CortinaControlProps {
   open: boolean;
   onToggle: () => void;
 }
 
-const CurtainControl: React.FC<CurtainControlProps> = ({ open, onToggle }) => {
+// Componente funcional que controla o estado das cortinas
+const CortinaControl: React.FC<CortinaControlProps> = ({ open, onToggle }) => {
   return (
-    <div className="curtain-control-container">
+    <div className="Cortina-control-container">
       <button onClick={onToggle}>
         {open ? 'As cortinas estão abertas' : 'As cortinas estão fechadas'}
       </button>
@@ -23,4 +25,4 @@ const CurtainControl: React.FC<CurtainControlProps> = ({ open, onToggle }) => {
   );
 };
 
-export default CurtainControl;
+export default CortinaControl;

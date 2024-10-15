@@ -1,16 +1,18 @@
 import React from 'react';
 
+// Definição das propriedades (props) que o componente TVProps espera receber
 interface TVProps {
-  channelImage: string; // Prop para a imagem do canal
-  isOn: boolean; // Prop para indicar se a TV está ligada ou desligada
+  canalImage: string;
+  isOn: boolean;
 }
 
-const TV: React.FC<TVProps> = ({ channelImage, isOn }) => {
+// Componente funcional que representa a TV
+const TV: React.FC<TVProps> = ({ canalImage, isOn }) => {
   return (
     <div className="tv">
       {isOn ? (
         <div className="tv-screen">
-          <img src={channelImage} alt="Canal da TV" />
+          <img src={canalImage} alt="Canal da TV" />
         </div>
       ) : (
         <div className="tv-off">A TV está desligada</div>

@@ -1,14 +1,16 @@
 import React from 'react';
 import './salaEstar';
 
-interface AirConditionerProps {
+// Definição das propriedades (props) que o componente ArCondicionado espera receber
+interface ArCondicionadoProps {
   on: boolean;
-  temperature: number;
+  temperatura: number;
   onToggle: () => void;
-  onChangeTemperature: (temp: number) => void;
+  onChangeTemperatura: (temp: number) => void;
 }
 
-const AirConditioner: React.FC<AirConditionerProps> = ({ on, temperature, onToggle, onChangeTemperature }) => {
+// Componente funcional que representa o Ar Condicionado
+const ArCondicionado: React.FC<ArCondicionadoProps> = ({ on, temperatura, onToggle, onChangeTemperatura }) => {
   return (
     <div className="arCondicionado">
       <button onClick={onToggle}>
@@ -22,7 +24,7 @@ const AirConditioner: React.FC<AirConditionerProps> = ({ on, temperature, onTogg
         />
         {on && ( // Mostra a temperatura apenas quando o ar-condicionado está ligado
           <div className="temperatura">
-            {temperature}°C
+            {temperatura}°C
           </div>
         )}
       </div>
@@ -33,8 +35,8 @@ const AirConditioner: React.FC<AirConditionerProps> = ({ on, temperature, onTogg
             type="number"
             min="18"
             max="30"
-            value={temperature}
-            onChange={(e) => onChangeTemperature(parseInt(e.target.value))}
+            value={temperatura}
+            onChange={(e) => onChangeTemperatura(parseInt(e.target.value))}
           />
         </div>
       )}
@@ -42,4 +44,4 @@ const AirConditioner: React.FC<AirConditionerProps> = ({ on, temperature, onTogg
   );
 };
 
-export default AirConditioner;
+export default ArCondicionado;

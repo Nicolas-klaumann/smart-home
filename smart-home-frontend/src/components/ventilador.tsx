@@ -1,16 +1,18 @@
 import React from 'react';
 import './quarto';
 
-interface FanControlProps {
+// Definição das propriedades (props) que o componente VentiladorControl espera receber
+interface VentiladorControlProps {
   on: boolean;
-  speed: number;
+  velocidade: number;
   onToggle: () => void;
-  onChangeSpeed: (speed: number) => void;
+  onChangeVelocidade: (velocidade: number) => void;
 }
 
-const FanControl: React.FC<FanControlProps> = ({ on, speed, onToggle, onChangeSpeed }) => {
+// Componente funcional que representa o VentiladorControl
+const VentiladorControl: React.FC<VentiladorControlProps> = ({ on, velocidade, onToggle, onChangeVelocidade }) => {
   return (
-    <div className="fan-control-container">
+    <div className="Ventilador-control-container">
       <button onClick={onToggle}>
         {on ? 'O ventilador está ligado' : 'O ventilador está desligado'}
       </button>
@@ -20,21 +22,21 @@ const FanControl: React.FC<FanControlProps> = ({ on, speed, onToggle, onChangeSp
           alt={on ? 'Ventilador ligado' : 'Ventilador desligado'}
           className={on ? 'imgVentiladorLigado' : 'imgVentiladorDesligado'}
         />
-        {on && (
+        {on && ( // Mostra a velocidade apenas quando o ventilador está ligado
           <div className="velocidade">
-            Velocidade: {speed}
+            Velocidade: {velocidade}
           </div>
         )}
       </div>
-      {on && (
+      {on && ( // Exibe o controle de velocidade apenas quando o ventilador está ligado
         <div>
           <label>Velocidade: </label>
           <input
             type="number"
             min="1"
             max="3"
-            value={speed}
-            onChange={(e) => onChangeSpeed(parseInt(e.target.value))}
+            value={velocidade}
+            onChange={(e) => onChangeVelocidade(parseInt(e.target.value))}
           />
         </div>
       )}
@@ -42,4 +44,4 @@ const FanControl: React.FC<FanControlProps> = ({ on, speed, onToggle, onChangeSp
   );
 };
 
-export default FanControl;
+export default VentiladorControl;

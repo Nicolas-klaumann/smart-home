@@ -1,16 +1,18 @@
 import React from 'react';
 import './cozinha.css';
 
-interface StoveControlProps {
+// Definição das propriedades (props) que o componente FogaoControl espera receber
+interface FogaoControlProps {
   on: boolean;
   power: number;
   onToggle: () => void;
   onChangePower: (power: number) => void;
 }
 
-const StoveControl: React.FC<StoveControlProps> = ({ on, power, onToggle, onChangePower }) => {
+// Componente funcional para controlar o fogão
+const FogaoControl: React.FC<FogaoControlProps> = ({ on, power, onToggle, onChangePower }) => {
   return (
-    <div className="stove-control-container">
+    <div className="Fogao-control-container">
       <button onClick={onToggle}>
         {on ? 'O fogão está ligado' : 'O fogão está desligado'}
       </button>
@@ -44,4 +46,4 @@ const StoveControl: React.FC<StoveControlProps> = ({ on, power, onToggle, onChan
   );
 };
 
-export default StoveControl;
+export default FogaoControl;

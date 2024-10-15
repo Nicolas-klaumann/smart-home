@@ -1,18 +1,20 @@
 import React from 'react';
 
-interface LightControlProps {
+// Definição das propriedades (props) que o componente LuzControl espera receber
+interface LuzControlProps {
   room: string;
-  lights: boolean;
+  Luz: boolean;
   onToggle: () => void;
 }
 
-const LightControl: React.FC<LightControlProps> = ({ room, lights, onToggle }) => {
+// Componente funcional para controlar o estado da luz
+const LuzControl: React.FC<LuzControlProps> = ({ room, Luz, onToggle }) => {
   return (
     <div>
       <button onClick={onToggle}>
-        {lights ? 'A luz está acesa' : 'A luz está apagada'}
+        {Luz ? 'A luz está acesa' : 'A luz está apagada'}
       </button>
-      {lights ? (
+      {Luz ? (
         <img className="imgLuz" src="/imgLuzAcesa.png" alt="Luz acesa" />
       ) : (
         <img className="imgLuz" src="/imgLuzApagada.png" alt="Luz apagada" />
@@ -21,4 +23,4 @@ const LightControl: React.FC<LightControlProps> = ({ room, lights, onToggle }) =
   );
 };
 
-export default LightControl;
+export default LuzControl;
