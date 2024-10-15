@@ -3,10 +3,14 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 
+// Cria a aplicação Express e habilita o uso de CORS para permitir requisições de diferentes origens
 const app = express();
 app.use(cors());
 
+// Cria o servidor HTTP usando o Express
 const httpServer = createServer(app);
+
+// Configura o Socket.IO
 const io = new Server(httpServer, {
   cors: {
     origin: '*',
@@ -14,106 +18,90 @@ const io = new Server(httpServer, {
   },
 });
 
-interface DeviceState {
-  lights: boolean;
-  tv?: {
-    on: boolean;
-    channel: number;
-  };
-  airConditioner?: {
-    on: boolean;
-    temperature: number;
-  };
-  fridge?: {
-    temperature: number;
-    alert: boolean;
-  };
-  stove?: {
-    on: boolean;
-    power: number;
-  };
-  fan?: {
-    on: boolean;
-    speed: number;
-  };
-  curtains?: 'open' | 'closed';
-}
-
+// Interface que define o estado de cada sala e seus dispositivos
 interface RoomState {
-  livingRoom: {
-    lights: boolean;
+  SalaEstar: {
+    Luz: boolean;
     tv: {
       on: boolean;
-      channel: number;
+      canal: number;
     };
-    airConditioner: {
+    ArCondicionado: {
       on: boolean;
-      temperature: number;
+      temperatura: number;
     };
   };
-  kitchen: {
-    lights: boolean;
-    fridge: {
-      temperature: number;
+  Cozinha: {
+    Luz: boolean;
+    Geladeira: {
+      temperatura: number;
       alert: boolean;
     };
-    stove: {
+    Fogao: {
       on: boolean;
       power: number;
     };
   };
-  bedroom: {
-    lights: boolean;
-    fan: {
+  Quarto: {
+    Luz: boolean;
+    Ventilador: {
       on: boolean;
-      speed: number;
+      velocidade: number;
     };
-    curtains: 'open' | 'closed';
+    Cortinas: 'aberto' | 'fechado';
   };
 }
 
+// Estado inicial dos dispositivos em cada sala
 let devicesState: RoomState = {
-  livingRoom: {
-    lights: false,
-    tv: { on: false, channel: 1 },
-    airConditioner: { on: false, temperature: 24 },
+  SalaEstar: {
+    Luz: false,
+    tv: { on: false, canal: 2 },
+    ArCondicionado: { on: false, temperatura: 24 },
   },
-  kitchen: {
-    lights: false,
-    fridge: { temperature: 4, alert: false },
-    stove: { on: false, power: 1 },
+  Cozinha: {
+    Luz: false,
+    Geladeira: { temperatura: 4, alert: false },
+    Fogao: { on: false, power: 1 },
   },
-  bedroom: {
-    lights: false,
-    fan: { on: false, speed: 1 },
-    curtains: 'closed',
+  Quarto: {
+    Luz: false,
+    Ventilador: { on: false, velocidade: 1 },
+    Cortinas: 'fechado',
   },
 };
 
+// Evento que ocorre quando um novo cliente se conecta ao servidor
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  console.log('Novo cliente conectado');
 
+  // Envia o estado inicial dos dispositivos para o cliente recém-conectado
   socket.emit('initialState', devicesState);
 
+  // Evento que lida com atualizações de dispositivos recebidas do cliente
   socket.on(
     'updateDevice',
     (data: { room: keyof RoomState; device: string; state: any }) => {
       const { room, device, state } = data;
       console.log(
-        `Update device request: Room - ${room}, Device - ${device}, State - ${state}`
+        `Solicitação de atualização de dispositivo: Sala - ${room}, Dispositivo - ${device}, Estado - ${state}`
       );
+
+      // Atualiza o estado do dispositivo no servidor, se ele existir na sala indicada
       if (devicesState[room] && device in devicesState[room]) {
         (devicesState[room] as any)[device] = state;
+
+        // Emite o evento de atualização de estado para todos os clientes conectados
         io.emit('deviceStateChanged', data);
       }
     }
   );
 
   socket.on('disconnect', () => {
-    console.log('Client disconnected');
+    console.log('Cliente desconectado');
   });
 });
 
 httpServer.listen(4000, () => {
-  console.log('Server is listening on port 4000');
+  console.log('Servidor rodando na porta 4000');
 });
